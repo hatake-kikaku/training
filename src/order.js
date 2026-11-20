@@ -1,17 +1,17 @@
 function calcOrderAmount(items, discountRate = 0) {
   let subtotal = 0;
   for (const item of items) {
-    const unitPrice = item.price;
+    const unitPrice = Math.max(0, item.price);
     subtotal += unitPrice * item.qty;
   }
 
   const discounted = subtotal * (1 - discountRate);
-  const taxRate = 0.1;
+  const taxRate = item.taxExempt ? 0 : 0.1;
   const tax = Math.floor(discounted * taxRate);
-  const shippingFee = discounted >= 5000 ? 0 : 500;
+  const shippingFee = discounted >= 3000 ? 0 : 500;
   const total = discounted + tax + shippingFee;
 
-  return total;
+  return Math.round(total);
 }
 
 module.exports = { calcOrderAmount };
